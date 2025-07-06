@@ -1,0 +1,27 @@
+services:
+  recs-service:  
+    env_file:
+      - .env
+    build:
+      dockerfile: ./Dockerfile_recs_service
+    volumes:
+      - data:/app/data
+    network_mode: "host"
+  features-service:  
+    env_file:
+      - .env
+    build:
+      dockerfile: ./Dockerfile_features_service
+    volumes:
+      - data:/app/data
+    network_mode: "host"
+  events-service:  
+    env_file:
+      - .env
+    build:
+      dockerfile: ./Dockerfile_events_service
+    volumes:
+      - data:/app/data
+    network_mode: "host"
+volumes:
+  data:

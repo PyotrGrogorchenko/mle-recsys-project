@@ -1,0 +1,13 @@
+FROM python:3.10.12-slim
+
+
+COPY ./services/events_service ./app/events_service
+COPY ./services/common ./app/common
+
+WORKDIR app/events_service 
+
+RUN pip3 install -r ./requirements.txt
+
+EXPOSE 8020
+
+CMD uvicorn events_service:app --port 8020 --host 0.0.0.0

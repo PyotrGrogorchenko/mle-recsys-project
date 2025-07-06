@@ -1,3 +1,5 @@
+Здесь укажите имя вашего бакета: **s3-student-mle-20241221-2d3d22a101**
+
 # Подготовка виртуальной машины
 
 ## Склонируйте репозиторий
@@ -15,19 +17,23 @@ git clone https://github.com/yandex-praktikum/mle-project-sprint-4-v001.git
 Создать новое виртуальное окружение можно командой:
 
 ```
-python3 -m venv env_recsys_start
+python3 -m venv .env_recsys_start
 ```
 
 После его инициализации следующей командой
 
 ```
-. env_recsys_start/bin/activate
+. .env_recsys_start/bin/activate
 ```
 
 установите в него необходимые Python-пакеты следующей командой
 
 ```
 pip install -r requirements.txt
+```
+
+```
+python3 -m ipykernel install --user --name='.env_recsys_start'
 ```
 
 ### Скачайте файлы с данными
@@ -40,6 +46,8 @@ pip install -r requirements.txt
 Скачайте их в директорию локального репозитория. Для удобства вы можете воспользоваться командой wget:
 
 ```
+cd data
+
 wget https://storage.yandexcloud.net/mle-data/ym/tracks.parquet
 
 wget https://storage.yandexcloud.net/mle-data/ym/catalog_names.parquet
@@ -61,12 +69,33 @@ jupyter lab --ip=0.0.0.0 --no-browser
 
 # Сервис рекомендаций
 
-Код сервиса рекомендаций находится в файле `recommendations_service.py`.
+Шаги для запуска сервиса рекомендаций:
 
-<*укажите здесь необходимые шаги для запуска сервиса рекомендаций*>
+```
+docker compose up --build
+```
+
+Адреса сервисов:
+- recs_service: http://localhost:8000
+- features_service: http://localhost:8010
+- events_service: http://localhost:8020
+
+Cтратегия смешивания онлайн- и офлайн-рекомендаций:
+- получаем онлайн- и офлайн-рекомендации
+- чередуем элементы из списков, пока позволяет минимальная длина
+- добавляем оставшиеся элементы в конец
+- удаляем дубликаты
+- оставляем только первые k рекомендаций
 
 # Инструкции для тестирования сервиса
 
 Код для тестирования сервиса находится в файле `test_service.py`.
 
-<*укажите здесь необходимые шаги для тестирования сервиса рекомендаций*>
+```
+python3 -m venv .env_recsys_start
+. .env_recsys_start/bin/activate
+pip install -r requirements.txt
+python test_service.py
+```
+Логи тестирования сервиса находится в файле `test_service.log`.
+

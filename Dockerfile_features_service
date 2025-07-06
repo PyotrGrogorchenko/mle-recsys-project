@@ -1,0 +1,13 @@
+FROM python:3.10.12-slim
+
+
+COPY ./services/features_service ./app/features_service
+COPY ./services/common ./app/common
+
+WORKDIR app/features_service 
+
+RUN pip3 install -r ./requirements.txt
+
+EXPOSE 8010
+
+CMD uvicorn features_service:app --port 8010 --host 0.0.0.0

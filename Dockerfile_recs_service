@@ -1,0 +1,12 @@
+FROM python:3.10.12-slim
+
+COPY ./services/recs_service ./app/recs_service
+COPY ./services/common ./app/common
+
+WORKDIR app/recs_service 
+
+RUN pip3 install -r ./requirements.txt
+
+EXPOSE 8000
+
+CMD uvicorn recs_service:app --port 8000 --host 0.0.0.0
